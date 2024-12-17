@@ -10,6 +10,20 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
     const [winnerIs,setWinner] = useState(null)
 
     const [moveCount,setMoveCount] = useState(1) ;
+    const [boardAnimationOn, setBoardAnimationOn] = useState(false); // animation for game board
+
+    useEffect(() => {
+        setBoardAnimationOn(true);
+    }, []);
+
+    useEffect(() => {
+        // short delay so react can manage states clearly
+        const timer = setTimeout(() => {
+            setBoardAnimationOn(true);
+        }, 10);
+  
+        return () => clearTimeout(timer);
+    }, [startingTurn]);  // load whenever the GameBoard rerender
 
     let winnigPattern = [
         [0,1,2],
@@ -51,15 +65,21 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
 
         if(moveCount===9 && !winner){
             setTieCount(prevCount=>prevCount+1) ;
-            setWinner('Tie')
+            setTimeout(() => {
+                setBoardAnimationOn(false) ;
+                setWinner('Tie');
+            }, 500);
+            return ;
         }
-        else if(!winner){
+        
+        if(!winner){
             setPlayer1Turn(!isPlayer1Trun) ;
         }
 
         if(winner){
-            
+
             setTimeout(()=>{
+                setBoardAnimationOn(false) ;
                 (isPlayer1Trun)?handlePlayer1Win():handlePlayer2Win();  
             }
             ,500)
@@ -90,6 +110,7 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
     const forContuniuePlaying=()=>{
         setPlayer1Turn(!startingTurn)  ;
         setStartingTurn(!startingTurn) ;
+        setWinner(null)
         cleanBoard() ;
         setMoveCount(1) ;
         gamePageAgain()
@@ -105,7 +126,7 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
     <WinnerPopUp winnerIs={winnerIs} gamePageAgain={gamePageAgain} forContuniuePlaying={forContuniuePlaying}  /> :
     <>
     
-    <div className='relative flex justify-center items-center  h-[500px] w-[570px]'>
+    <div className={`relative flex justify-center items-center  h-[500px] w-[570px] transition-transform duration-500 ${(boardAnimationOn)?`scale-100` : `scale-0`} `}>
         <img src="/board2.png" className='scale-110 absolute object-cover' />
         <div className='grid grid-cols-3 gap-2 z-10' >
             {
