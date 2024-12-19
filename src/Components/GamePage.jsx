@@ -16,7 +16,7 @@ const GamePage = ({gameMode,goToHomePage}) => {
         <img src="/goBackBg.png" className='object-contain' onClick={goToHomePage} />
       </div>
 
-      <GameBoard isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
+      <GameBoard gameMode={gameMode} isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
       setPlayer2WinCount={setPlayer2WinCount} setTieCount={setTieCount} />
 
       <div className='flex justify-between items-center mt-10 bottom-4'>
@@ -39,7 +39,7 @@ const GamePage = ({gameMode,goToHomePage}) => {
             <img src="/settingBg.png" className='object-contain h-20 w-20 mb-2 ' />
             <div className=' absolute z-10 font-bold text-3xl '>{player2WInCount}</div>
           </div>
-          <div className='font-bold text-3xl '>Player 1</div>
+          <div className='font-bold text-3xl '>{gameMode}</div>
         </div>
       </div>
 

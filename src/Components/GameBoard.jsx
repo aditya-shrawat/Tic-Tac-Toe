@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import WinnerPopUp from './WinnerPopUp';
 
-const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2WinCount,setTieCount}) => {
+const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2WinCount,setTieCount}) => {
 
     const [startingTurn,setStartingTurn] = useState(isPlayer1Trun) ; 
 
-    const [board,setBoard] = useState(Array(9).fill(''));
-    const [xTurn,setxTurn] = useState(true) ;
-    const [winnerIs,setWinner] = useState(null)
+    const [board,setBoard] = useState(Array(9).fill(''));  // game board
+    const [xTurn,setxTurn] = useState(true) ;  // to change turn type (x/o)
+    const [winnerIs,setWinner] = useState(null)  // to store winner
 
-    const [moveCount,setMoveCount] = useState(1) ;
+    const [moveCount,setMoveCount] = useState(1) ;   // to count total moves in game
     const [boardAnimationOn, setBoardAnimationOn] = useState(false); // animation for game board
 
     useEffect(() => {
         setBoardAnimationOn(true);
-    }, []);
+    }, []);  // animation on initial load
 
     useEffect(() => {
         // short delay so react can manage states clearly
@@ -23,7 +23,7 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
         }, 10);
   
         return () => clearTimeout(timer);
-    }, [startingTurn]);  // load whenever the GameBoard rerender
+    }, [startingTurn]);  // load whenever the GameBoard rerender (whenever the starting turn get change it means a new game get start)
 
     let winnigPattern = [
         [0,1,2],
@@ -36,6 +36,7 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
         [6,7,8]
     ];
 
+    // checking if there is any winner or not
     const checkWinnigPatterns = (newBoard)=>{
         for (let pattern of winnigPattern){
             const move1 = newBoard[pattern[0]] ;
@@ -51,6 +52,7 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
         return null ;
     }
 
+    // to handle click on the gird/game board
     const handleBoardClick =(index)=>{
         if(board[index]!=='' || winnerIs) 
             return ;
@@ -61,8 +63,10 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
         newBoard[index] = xTurn?'x':'o' ;
         setBoard(newBoard) ;
 
+        // checking for winner after every move
         const winner = checkWinnigPatterns(newBoard);
 
+        // checking is the game get tie ?
         if(moveCount===9 && !winner){
             setTieCount(prevCount=>prevCount+1) ;
             setTimeout(() => {
@@ -72,10 +76,12 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
             return ;
         }
         
+        // change turn if no winner is found 
         if(!winner){
             setPlayer1Turn(!isPlayer1Trun) ;
         }
 
+        // if winner get found
         if(winner){
 
             setTimeout(()=>{
@@ -84,7 +90,7 @@ const GameBoard = ({isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,setPlayer2Wi
             }
             ,500)
         }
-        else{
+        else{  // no winner found then change turn type (x/o)
             setxTurn(!xTurn) ;
         }
     };
