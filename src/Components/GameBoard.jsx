@@ -9,8 +9,11 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
     const [xTurn,setxTurn] = useState(true) ;  // to change turn type (x/o)
     const [winnerIs,setWinner] = useState(null)  // to store winner
 
-    const [moveCount,setMoveCount] = useState(1) ;   // to count total moves in game
     const [boardAnimationOn, setBoardAnimationOn] = useState(false); // animation for game board
+
+    // to manage player1(human) move type (x/o)
+    const [humanMoveType,setHumanMoveType] = useState('x') ;   // initialy it is 'x'
+    const [aiShouldStart,setAiShouldStart] = useState(false)
 
     useEffect(() => {
         setBoardAnimationOn(true);
@@ -52,12 +55,21 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
         return null ;
     }
 
+    // when the first move is of Ai
+    useEffect(()=>{
+        if(gameMode==='AI'&& aiShouldStart && !isPlayer1Trun && xTurn){
+            setTimeout(()=>{
+                handleAimove(board,xTurn,isPlayer1Trun);
+                setAiShouldStart(false);
+            },1000)
+            setAiShouldStart(false);
+        }
+    },[aiShouldStart,isPlayer1Trun,gameMode])
+
     // to handle click on the gird/game board
     const handleBoardClick =(index)=>{
         if(board[index]!=='' || winnerIs) 
             return ;
-
-        setMoveCount(prevCount=>prevCount+1) ; // counting moves 
 
         const newBoard = [...board] ;
         newBoard[index] = xTurn?'x':'o' ;
@@ -67,7 +79,7 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
         const winner = checkWinnigPatterns(newBoard);
 
         // checking is the game get tie ?
-        if(moveCount===9 && !winner){
+        if(!newBoard.includes('') && !winner){
             setTieCount(prevCount=>prevCount+1) ;
             setTimeout(() => {
                 setBoardAnimationOn(false) ;
@@ -75,23 +87,27 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
             }, 500);
             return ;
         }
-        
-        // change turn if no winner is found 
-        if(!winner){
-            setPlayer1Turn(!isPlayer1Trun) ;
-        }
 
         // if winner get found
         if(winner){
-
             setTimeout(()=>{
                 setBoardAnimationOn(false) ;
                 (isPlayer1Trun)?handlePlayer1Win():handlePlayer2Win();  
             }
             ,500)
         }
-        else{  // no winner found then change turn type (x/o)
-            setxTurn(!xTurn) ;
+        else{  // no winner found then change turn type (x/o) and turn 
+            if(gameMode==='AI' ){
+                setxTurn(!xTurn) ;
+                setPlayer1Turn(!isPlayer1Trun) ;
+                setTimeout(()=>{
+                    handleAimove(newBoard,!xTurn,!isPlayer1Trun);
+                },1000)
+            }
+            else{
+                setxTurn(!xTurn) ;
+                setPlayer1Turn(!isPlayer1Trun) ;
+            }
         }
     };
 
@@ -103,9 +119,71 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
 
     // if player 2 get win
     const handlePlayer2Win =()=>{
-        setWinner('Player 2') 
+        setWinner(gameMode) 
         setPlayer2WinCount((prevScore)=>prevScore+1)
     }
+
+    // handling ai move 
+    const handleAimove=(currentBoard,varXTurn,varIsPlayer1Turn)=>{
+        const aiMovePlace = findAiMovePlace(currentBoard);
+
+        if(aiMovePlace>=0){
+            const newBoard = [...currentBoard];
+            newBoard[aiMovePlace]= (varXTurn)?'x':'o';
+            setBoard(newBoard); // update the board after the ai move 
+
+            // checking for winner after every move
+            const winner = checkWinnigPatterns(newBoard);
+
+            // checking is the game get tie ?
+            if(!newBoard.includes('') && !winner){
+                setTieCount(prevCount=>prevCount+1) ;
+                setTimeout(() => {
+                    setBoardAnimationOn(false) ;
+                    setWinner('Tie');
+                }, 500);
+                return ;
+            }
+
+            // if winner get found
+            if(winner){
+                setTimeout(()=>{
+                    setBoardAnimationOn(false) ;
+                    (varIsPlayer1Turn)?handlePlayer1Win():handlePlayer2Win();  
+                }
+                ,500)
+            }
+            else{ // no winner found then change turn type (x/o) and turn 
+                setxTurn(!varXTurn) ;
+                setPlayer1Turn(!varIsPlayer1Turn) ;
+            }
+            
+        }
+    }
+
+    function findAiMovePlace(currentBoard){
+        const humanSymbol = humanMoveType ;
+        const aiSymbol = (humanMoveType==='x')?'o':'x';
+        for(let pattern of winnigPattern){
+            const movesArr = [currentBoard[pattern[0]], currentBoard[pattern[1]], currentBoard[pattern[2]]];
+
+            // checking if there ai is winning and a empty place is available
+            if( (movesArr.filter((move)=>move===aiSymbol).length === 2) && (movesArr.includes('')) ){
+                const idx = movesArr.indexOf('') // finding index of empty space index in moveArr 
+                return pattern[idx] ; // return the empty position on board
+            }
+
+            // checking if there player1 / human is winning and a empty place is available then block the win
+            if( (movesArr.filter((move)=>move===humanSymbol).length === 2) && (movesArr.includes('')) ){
+                const idx = movesArr.indexOf('') // finding index of empty space index in moveArr 
+                return pattern[idx] ; // return the empty position on board
+            }
+        }
+
+        // if there is both of these posibilities are not avaliable
+        return currentBoard.findIndex(move => move === '');
+    }
+
 
     // to come back to the game board screen 
     const gamePageAgain = ()=>{
@@ -114,11 +192,18 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
 
     // if user Want to contuniue the game
     const forContuniuePlaying=()=>{
+        const nextStartingTurn = !startingTurn;
         setPlayer1Turn(!startingTurn)  ;
+        if(gameMode==='AI'){
+            const changedHumanMoveType = (humanMoveType==='x')?'o':'x'
+            setHumanMoveType(changedHumanMoveType);
+            if (!nextStartingTurn) {
+                setAiShouldStart(true);
+            }
+        }
         setStartingTurn(!startingTurn) ;
         setWinner(null)
         cleanBoard() ;
-        setMoveCount(1) ;
         gamePageAgain()
     }
 
