@@ -18,9 +18,11 @@ const HomePage = () => {
         {gameMode?
         <GamePage gameMode={gameMode} goToHomePage={goToHomePage}  /> :
         <>
-        <img src="/heading.png" className='mb-3' />
-        <button onClick={()=>handleBtnClick('AI')} className='bg-green-500 p-2 w-1/2 rounded-full text-lg font-semibold text-white' >Play with AI</button>
-        <button onClick={()=>handleBtnClick('Player 2')} className='bg-green-500 p-2 w-1/2 rounded-full text-lg font-semibold text-white' >Play with a Friend</button>
+        <div className='mb-3 h-2/3 w-2/3 md:h-full md:w-full'><img src="/heading.png" className='object-contain' /></div>
+        <div className='w-auto h-auto  flex justify-between items-center flex-col'>
+          <button onClick={()=>handleBtnClick('AI')} className='bg-green-500 p-2 px-4 w-full rounded-full text-base md:text-lg font-semibold text-white mb-4' >Play with AI</button>
+          <button onClick={()=>handleBtnClick('Player 2')} className='bg-green-500 p-2 px-4 w-full rounded-full text-base md:text-lg font-semibold text-white' >Play with a Friend</button>
+        </div>
         </>
         }
     </div>

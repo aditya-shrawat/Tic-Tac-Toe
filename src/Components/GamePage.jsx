@@ -12,36 +12,36 @@ const GamePage = ({gameMode,goToHomePage}) => {
   return (
     <div className='relative overflow-hidden'>
       
-      <div className='h-12 w-20 z-20 absolute top-0 left-0' >
+      <div className='h-6 w-12 md:h-8 md:w-16 z-20 absolute top-0 left-0' >
         <img src="/goBackBg.png" className='object-contain' onClick={goToHomePage} />
       </div>
 
-      <div className='h-[500px] w-[570px]'>
+      <div className='h-[290px] w-[330px] md:h-[440px] md:w-[490px]'>
         <GameBoard gameMode={gameMode} isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
         setPlayer2WinCount={setPlayer2WinCount} setTieCount={setTieCount} />
       </div>
 
-      <div className='flex justify-between items-center mt-10 bottom-4'>
-        <div className='h-36 w-36 flex flex-col justify-center items-center'>
+      <div className='flex justify-between items-center mt-10'>
+        <div className='h-auto w-auto flex flex-col justify-center items-center'>
           <div className={`flex justify-center ${(isPlayer1Trun)?`bg-red-400`:`bg-transparent`} items-center`}>
-            <img src="/settingBg.png" className='object-contain h-20 w-20 mb-2 ' />
-            <div className=' absolute z-10 font-bold text-3xl '>{player1WinCount}</div>
+            <div className='h-10 w-10 md:h-14 md:w-14 mb-2 '><img src="/settingBg.png" className='object-contain ' /></div>
+            <div className=' absolute z-10 font-bold text-2xl md:text-4xl '>{player1WinCount}</div>
           </div>
-          <div className='font-bold text-3xl '>Player 1</div>
+          <div className='font-bold text-xl md:text-2xl '>Player 1</div>
         </div>
-        <div className='h-36 w-36 flex flex-col justify-center items-center'>
+        <div className='h-auto w-auto flex flex-col justify-center items-center'>
           <div className='flex justify-center items-center '>
-            <img src="/settingBg.png" className='object-contain h-20 w-20 mb-2 ' />
-            <div className=' absolute z-10 font-bold text-3xl '>{tieCount}</div>
+            <div className='h-10 w-10 md:h-14 md:w-14 mb-2 '><img src="/settingBg.png" className='object-contain ' /></div>
+            <div className=' absolute z-10 font-bold text-2xl md:text-4xl '>{tieCount}</div>
           </div>
-          <div className='font-bold text-3xl '>Tie</div>
+          <div className='font-bold text-xl md:text-2xl '>Tie</div>
         </div>
-        <div className='h-36 w-36 flex flex-col justify-center items-center'>
+        <div className='h-auto w-auto flex flex-col justify-center items-center'>
           <div className={`flex justify-center items-center ${(!isPlayer1Trun)?`bg-red-400`:`bg-transparent`} `}>
-            <img src="/settingBg.png" className='object-contain h-20 w-20 mb-2 ' />
-            <div className=' absolute z-10 font-bold text-3xl '>{player2WInCount}</div>
+            <div className='h-10 w-10 md:h-14 md:w-14 mb-2 '><img src="/settingBg.png" className='object-contain' /></div>
+            <div className=' absolute z-10 font-bold text-2xl md:text-4xl '>{player2WInCount}</div>
           </div>
-          <div className='font-bold text-3xl '>{gameMode}</div>
+          <div className='font-bold text-xl md:text-2xl '>{gameMode}</div>
         </div>
       </div>
 
