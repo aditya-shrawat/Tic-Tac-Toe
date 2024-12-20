@@ -16,8 +16,10 @@ const GamePage = ({gameMode,goToHomePage}) => {
         <img src="/goBackBg.png" className='object-contain' onClick={goToHomePage} />
       </div>
 
-      <GameBoard gameMode={gameMode} isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
-      setPlayer2WinCount={setPlayer2WinCount} setTieCount={setTieCount} />
+      <div className='h-[500px] w-[570px]'>
+        <GameBoard gameMode={gameMode} isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
+        setPlayer2WinCount={setPlayer2WinCount} setTieCount={setTieCount} />
+      </div>
 
       <div className='flex justify-between items-center mt-10 bottom-4'>
         <div className='h-36 w-36 flex flex-col justify-center items-center'>

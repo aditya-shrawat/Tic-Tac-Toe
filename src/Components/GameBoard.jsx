@@ -190,8 +190,8 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
         setWinner(null) ;
     }
 
-    // if user Want to contuniue the game
-    const forContuniuePlaying=()=>{
+    // if user Want to contuniue the game or reset the game
+    const handlePlayResetBtn=(btnClicked)=>{
         const nextStartingTurn = !startingTurn;
         setPlayer1Turn(!startingTurn)  ;
         if(gameMode==='AI'){
@@ -204,6 +204,9 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
         setStartingTurn(!startingTurn) ;
         setWinner(null)
         cleanBoard() ;
+        if(btnClicked==='Reset'){
+            setPlayer1WinCount(0); setPlayer2WinCount(0);setTieCount(0);
+        }
         gamePageAgain()
     }
 
@@ -214,10 +217,10 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
 
   return (
     (winnerIs)?
-    <WinnerPopUp winnerIs={winnerIs} gamePageAgain={gamePageAgain} forContuniuePlaying={forContuniuePlaying}  /> :
+    <WinnerPopUp winnerIs={winnerIs} handlePlayResetBtn={handlePlayResetBtn} /> :
     <>
     
-    <div className={`relative flex justify-center items-center  h-[500px] w-[570px] transition-transform duration-500 ${(boardAnimationOn)?`scale-100` : `scale-0`} `}>
+    <div className={`relative flex justify-center items-center  h-full w-full transition-transform duration-500 ${(boardAnimationOn)?`scale-100` : `scale-0`} `}>
         <img src="/board2.png" className='scale-110 absolute object-cover' />
         <div className='grid grid-cols-3 gap-2 z-10' >
             {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-const WinnerPopUp = ({winnerIs,gamePageAgain,forContuniuePlaying}) => {
+const WinnerPopUp = ({winnerIs,handlePlayResetBtn}) => {
 
     const [animationOn,setAnimationOn] = useState(false) ;
     const [hideAnimation,setHideAnimation] = useState(false) ;
@@ -16,17 +16,17 @@ const WinnerPopUp = ({winnerIs,gamePageAgain,forContuniuePlaying}) => {
         return () => clearTimeout(timer);
     },[winnerIs])
 
-    const handlePlayBtnClick = ()=>{
+    const handleBtnClicks = (btnClicked)=>{
         setHideAnimation(true) ;
         setTimeout(()=>{
-            // setHideAnimation(false) ;
             setAnimationOn(false);
-            forContuniuePlaying()
+            console.log("btn clicked ",btnClicked)
+            handlePlayResetBtn(btnClicked)
         },500)
     }
 
   return (
-    <div className={`relative flex justify-center items-center transition-transform duration-500 ${(animationOn && !hideAnimation)?`scale-100` : `scale-0`}`}>
+    <div className={`h-full w-full relative flex justify-center items-center transition-transform duration-500 ${(animationOn && !hideAnimation)?`scale-100` : `scale-0`}`}>
         <div>
             <img src="/winnerPopUpBg.png" className='object-contain' />
         </div>
@@ -34,10 +34,10 @@ const WinnerPopUp = ({winnerIs,gamePageAgain,forContuniuePlaying}) => {
             <h1 className='text-5xl font-bold'>{winnerIs} win</h1>
             <div className='flex justify-center items-center'>
                 <div>
-                    <img src="/reset1.png" className='object-contain' onClick={gamePageAgain} />
+                    <img src="/reset1.png" className='object-contain' onClick={()=>{handleBtnClicks('Reset')}} />
                 </div>
                 <div>
-                    <img src="/play1.png" className='object-contain' onClick={handlePlayBtnClick} />
+                    <img src="/play1.png" className='object-contain' onClick={()=>{handleBtnClicks('Play')}} />
                 </div>
             </div>
         </div>
