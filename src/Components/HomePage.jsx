@@ -18,10 +18,10 @@ const HomePage = () => {
         {gameMode?
         <GamePage gameMode={gameMode} goToHomePage={goToHomePage}  /> :
         <>
-        <div className='mb-10 '><img src="/heading.png" className='object-contain' /></div>
+        <div className='mb-10 '><img src="/Tic Tac Toe.png" className='object-contain' /></div>
         <div className='w-auto h-auto  flex justify-between items-center flex-col'>
-          <button onClick={()=>handleBtnClick('AI')} className='bg-[#2DC19F] p-2 px-4 w-full rounded-full text-lg font-semibold text-white mb-5 shadow-lg shadow-[#1F8F76]' >Play with AI</button>
-          <button onClick={()=>handleBtnClick('Player 2')} className='bg-[#2DC19F] p-2 px-4 w-full rounded-full text-lg font-semibold text-white shadow-lg shadow-[#1F8F76]' >Play with a Friend</button>
+          <button onClick={()=>handleBtnClick('AI')} className='bg-[#10A89C] p-2 px-4 w-full rounded-full text-lg font-semibold text-white mb-5 shadow-lg shadow-[#0B786F]' >Play with AI</button>
+          <button onClick={()=>handleBtnClick('Player 2')} className='bg-[#10A89C] p-2 px-4 w-full rounded-full text-lg font-semibold text-white shadow-lg shadow-[#0B786F]' >Play with a Friend</button>
         </div>
         </>
         }
