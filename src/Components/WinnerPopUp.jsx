@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faRotateLeft,faPlay } from '@fortawesome/free-solid-svg-icons';
+
 const WinnerPopUp = ({winnerIs,handlePlayResetBtn}) => {
 
     const [animationOn,setAnimationOn] = useState(false) ;
@@ -26,18 +29,17 @@ const WinnerPopUp = ({winnerIs,handlePlayResetBtn}) => {
     }
 
   return (
-    <div className={`h-full w-full relative flex justify-center items-center transition-transform duration-500 ${(animationOn && !hideAnimation)?`scale-100` : `scale-0`}`}>
-        <div className='absolute h-full w-full'>
-            <img src="/winnerPopUpBg.png" className='object-contain h-full w-full' />
-        </div>
-        <div className=' z-20'>
-            <h1 className=' text-xl md:text-3xl font-bold text-center'>{winnerIs} {<br/>} win</h1>
-            <div className='flex justify-center items-center mt-2'>
-                <div className='h-10 w-10 md:h-14 md:w-14 mr-2'>
-                    <img src="/reset1.png" className='object-contain' onClick={()=>{handleBtnClicks('Reset')}} />
-                </div>
-                <div className='h-10 w-10 md:h-14 md:w-14'>
-                    <img src="/play1.png" className='object-contain' onClick={()=>{handleBtnClicks('Play')}} />
+    <div className={`h-full w-full flex justify-center items-center transition-transform duration-500 ${(animationOn && !hideAnimation)?`scale-100` : `scale-0`}`}>
+        <div className='absolute h-full w-full flex justify-center items-center bg-[#2DC19F] p-6 rounded-2xl'>
+            <div className=' z-20'>
+                <h1 className=' text-4xl text-white font-bold text-center'>{winnerIs} win</h1>
+                <div className='flex justify-center items-center mt-8'>
+                    <div onClick={()=>{handleBtnClicks('Reset')}} className='h-12 w-12 flex justify-center items-center text-2xl font-bold text-white rounded-full border-2 mr-5 cursor-pointer shadow-inner shadow-[#1F8F76]'>
+                        <FontAwesomeIcon icon={faRotateLeft} />
+                    </div>
+                    <div onClick={()=>{handleBtnClicks('Play')}} className='h-12 w-12 flex justify-center items-center text-2xl font-bold text-white rounded-full border-2 cursor-pointer shadow-inner shadow-[#1F8F76]'>
+                        <FontAwesomeIcon icon={faPlay} />
+                    </div>
                 </div>
             </div>
         </div>

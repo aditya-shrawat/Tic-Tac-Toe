@@ -1,5 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GameBoard from './GameBoard'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLeftLong } from '@fortawesome/free-solid-svg-icons';
 
 const GamePage = ({gameMode,goToHomePage}) => {
 
@@ -9,39 +12,48 @@ const GamePage = ({gameMode,goToHomePage}) => {
   const [player2WInCount,setPlayer2WinCount] = useState(0) ;
   const [tieCount,setTieCount] = useState(0) ;
 
+  const [gamePageAnimation,setGamePageAnimation] = useState(false)
+
+  useEffect(()=>{
+    setGamePageAnimation(true)
+  },[])
+
   return (
-    <div className='relative overflow-hidden'>
-      
-      <div className='h-6 w-12 md:h-8 md:w-16 z-20 absolute top-0 left-0' >
-        <img src="/goBackBg.png" className='object-contain' onClick={goToHomePage} />
+    <div className='h-full w-full relative overflow-hidden '>
+      <div onClick={goToHomePage} className={`bg-[#2DC19F] h-10 w-10 flex justify-center items-center text-xl font-bold text-white rounded-full border-2 cursor-pointer
+           shadow-inner shadow-[#1F8F76] absolute top-3 left-3 transition-transform duration-500 ${(gamePageAnimation)?`scale-100` : `scale-0`} `} >
+        <FontAwesomeIcon icon={faLeftLong} />
       </div>
 
-      <div className='h-[290px] w-[330px] md:h-[440px] md:w-[490px]'>
-        <GameBoard gameMode={gameMode} isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
-        setPlayer2WinCount={setPlayer2WinCount} setTieCount={setTieCount} />
-      </div>
+      <div className='h-full w-[330px] m-auto flex justify-center items-center flex-col'>
+        <div className='w-auto'>
+          <div className={` h-[280px] w-[280px] flex justify-center items-center bg-[#2DC19F] rounded-2xl 
+              shadow-lg shadow-[#1F8F76] transition-transform duration-500 ${(gamePageAnimation)?`scale-100` : `scale-0`}`}>
+            <GameBoard gameMode={gameMode} isPlayer1Trun={isPlayer1Trun}  setPlayer1Turn={setPlayer1Turn} setPlayer1WinCount={setPlayer1WinCount} 
+            setPlayer2WinCount={setPlayer2WinCount} setTieCount={setTieCount} />
+          </div>
 
-      <div className='flex justify-between items-center mt-10'>
-        <div className='h-auto w-auto flex flex-col justify-center items-center'>
-          <div className={`flex justify-center ${(isPlayer1Trun)?`bg-red-400`:`bg-transparent`} items-center`}>
-            <div className='h-10 w-10 md:h-14 md:w-14 mb-2 '><img src="/settingBg.png" className='object-contain ' /></div>
-            <div className=' absolute z-10 font-bold text-2xl md:text-4xl '>{player1WinCount}</div>
+          <div className={`flex justify-between items-center mt-10 bg-[#2DC19F] w-full text-lg font-bold text-white rounded-2xl p-3 
+              shadow-lg shadow-[#1F8F76]  transition-transform duration-500 ${(gamePageAnimation)?`scale-100` : `scale-0`}` }>
+            <div className={`h-auto w-auto flex flex-col justify-center items-center border-red-400 border-b-${(isPlayer1Trun)?`4`:`0`}`}>
+              <div className={`flex justify-center items-center text-xl `}>
+                {player1WinCount}
+              </div>
+              <div>Player 1</div>
+            </div>
+            <div className='h-auto w-auto flex flex-col justify-center items-center'>
+              <div className='flex justify-center items-center text-xl '>
+                {tieCount}
+              </div>
+              <div>Tie</div>
+            </div>
+            <div className={`h-auto w-auto flex flex-col justify-center items-center border-red-400 border-b-${(!isPlayer1Trun)?`4`:`0`}`}>
+              <div className={`flex justify-center items-center text-xl `}>
+                {player2WInCount}
+              </div>
+              <div>{gameMode}</div>
+            </div>
           </div>
-          <div className='font-bold text-xl md:text-2xl '>Player 1</div>
-        </div>
-        <div className='h-auto w-auto flex flex-col justify-center items-center'>
-          <div className='flex justify-center items-center '>
-            <div className='h-10 w-10 md:h-14 md:w-14 mb-2 '><img src="/settingBg.png" className='object-contain ' /></div>
-            <div className=' absolute z-10 font-bold text-2xl md:text-4xl '>{tieCount}</div>
-          </div>
-          <div className='font-bold text-xl md:text-2xl '>Tie</div>
-        </div>
-        <div className='h-auto w-auto flex flex-col justify-center items-center'>
-          <div className={`flex justify-center items-center ${(!isPlayer1Trun)?`bg-red-400`:`bg-transparent`} `}>
-            <div className='h-10 w-10 md:h-14 md:w-14 mb-2 '><img src="/settingBg.png" className='object-contain' /></div>
-            <div className=' absolute z-10 font-bold text-2xl md:text-4xl '>{player2WInCount}</div>
-          </div>
-          <div className='font-bold text-xl md:text-2xl '>{gameMode}</div>
         </div>
       </div>
 

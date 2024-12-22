@@ -220,17 +220,18 @@ const GameBoard = ({gameMode,isPlayer1Trun,setPlayer1Turn,setPlayer1WinCount,set
     <WinnerPopUp winnerIs={winnerIs} handlePlayResetBtn={handlePlayResetBtn} /> :
     <>
     
-    <div className={`relative flex justify-center items-center  h-full w-full transition-transform duration-500 ${(boardAnimationOn)?`scale-100` : `scale-0`} `}>
-        <div className=' absolute h-full w-full '><img src="/board2.png" className=' object-cover' /></div>
-        <div className='grid grid-cols-3 gap-2 z-10' >
-            {
-                board.map((value,index)=>(
-                    <button key={index} className=" bg-red-400 w-[45px] h-[45px] md:w-[70px] md:h-[70px] flex items-center justify-center text-4xl md:text-6xl font-bold cursor-pointer" 
-                      onClick={()=>handleBoardClick(index)} >
-                        {value}
-                    </button>
-                ))
-            }
+    <div className={` flex justify-center items-center h-full w-full transition-transform duration-500 ${(boardAnimationOn)?`scale-100` : `scale-0`} `}>
+        <div className='h-full w-full p-4 '>
+            <div className='grid grid-cols-3 gap-2 z-10' >
+                {
+                    board.map((value,index)=>(
+                        <button key={index} className=" bg-red-400 w-[75px] h-[77px] flex items-center justify-center text-white text-5xl font-bold cursor-pointer" 
+                        onClick={()=>handleBoardClick(index)} >
+                            {value}
+                        </button>
+                    ))
+                }
+            </div>
         </div>
     </div>
     </>
